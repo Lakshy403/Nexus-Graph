@@ -1,0 +1,53 @@
+[
+  {
+    "type": "github_commit",
+    "source": "github",
+    "timestamp": "2026-05-07T12:00:00Z",
+    "payload": {
+      "user": "dev-alice",
+      "repo": "nexus-infra",
+      "branch": "feature/cooling-update",
+      "commit_sha": "a1b2c3d4e5f6",
+      "message": "Update TEMP_LIMIT to 200 in cooling config",
+      "diff": "- TEMP_LIMIT = 180\n+ TEMP_LIMIT = 200"
+    }
+  },
+  {
+    "type": "github_commit",
+    "source": "github",
+    "timestamp": "2026-05-07T12:30:00Z",
+    "payload": {
+      "user": "dev-bob",
+      "repo": "auth-service",
+      "branch": "feature/basic-auth-endpoint",
+      "commit_sha": "b2c3d4e5f6a7",
+      "message": "Add basic auth middleware for legacy API",
+      "diff": "+ app.use('/api/legacy', basicAuthMiddleware);\n+ const basicAuth = require('express-basic-auth');"
+    }
+  },
+  {
+    "type": "github_pr",
+    "source": "github",
+    "timestamp": "2026-05-07T13:00:00Z",
+    "payload": {
+      "user": "dev-charlie",
+      "repo": "deployment-scripts",
+      "branch": "feature/swarm-deploy",
+      "message": "Add Docker Swarm deployment for notification service",
+      "diff": "+ docker stack deploy -c docker-compose.yml notification-svc"
+    }
+  },
+  {
+    "type": "github_commit",
+    "source": "github",
+    "timestamp": "2026-05-07T13:30:00Z",
+    "payload": {
+      "user": "dev-diana",
+      "repo": "api-gateway",
+      "branch": "main",
+      "commit_sha": "c3d4e5f6a7b8",
+      "message": "Remove rate limiting from /api/webhooks endpoint",
+      "diff": "- app.use('/api/webhooks', rateLimiter({ max: 1000 }));\n+ // Rate limiting removed for webhooks"
+    }
+  }
+]

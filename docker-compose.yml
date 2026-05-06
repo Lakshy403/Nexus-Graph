@@ -1,0 +1,182 @@
+# ==============================================
+# Nexus-Graph AI — Docker Compose (Phase 1)
+# ==============================================
+# Usage:
+#   docker-compose up --build
+#   docker-compose down -v  (to also remove volumes)
+# ==============================================
+
+services:
+  # ---- Infrastructure ----
+
+  redis:
+    image: redis:7-alpine
+    container_name: nexus-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nexus-net
+
+  mongo:
+    image: mongo:7
+    container_name: nexus-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./docker/mongo/init.js:/docker-entrypoint-initdb.d/init.js:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nexus-net
+
+  neo4j:
+    image: neo4j:5-community
+    container_name: nexus-neo4j
+    ports:
+      - "7474:7474"   # Browser UI
+      - "7687:7687"   # Bolt protocol
+    environment:
+      NEO4J_AUTH: neo4j/nexus_graph_2026
+    volumes:
+      - neo4j_data:/data
+      - ./docker/neo4j/init.cypher:/var/lib/neo4j/import/init.cypher
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "nexus_graph_2026", "RETURN 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+    networks:
+      - nexus-net
+
+  neo4j-init:
+    image: neo4j:5-community
+    container_name: nexus-neo4j-init
+    depends_on:
+      neo4j:
+        condition: service_healthy
+    volumes:
+      - ./docker/neo4j/init.cypher:/init.cypher:ro
+    entrypoint: ["cypher-shell", "-a", "bolt://neo4j:7687", "-u", "neo4j", "-p", "nexus_graph_2026", "-f", "/init.cypher"]
+    networks:
+      - nexus-net
+    restart: "no"
+
+  chromadb:
+    image: chromadb/chroma:0.5.23
+    container_name: nexus-chromadb
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    environment:
+      IS_PERSISTENT: "TRUE"
+      ANONYMIZED_TELEMETRY: "FALSE"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nexus-net
+
+  # ---- Application Services ----
+
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    container_name: nexus-gateway
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      GATEWAY_PORT: 3000
+      REDIS_URL: redis://redis:6379
+      MONGODB_URI: mongodb://mongo:27017/nexus_graph
+      AI_GRPC_URL: ai-service:50051
+    depends_on:
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - nexus-net
+
+  ai-service:
+    build:
+      context: .
+      dockerfile: ai-service/Dockerfile
+    container_name: nexus-ai-service
+    ports:
+      - "8001:8001"
+      - "50051:50051"
+    environment:
+      AI_SERVICE_PORT: 8001
+      AI_SERVICE_HOST: 0.0.0.0
+      AI_GRPC_HOST: 0.0.0.0
+      AI_GRPC_PORT: 50051
+      REDIS_URL: redis://redis:6379
+      MONGODB_URI: mongodb://mongo:27017/nexus_graph
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: nexus_graph_2026
+      CHROMA_HOST: chromadb
+      CHROMA_PORT: 8000
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      LOG_LEVEL: INFO
+    depends_on:
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+      neo4j-init:
+        condition: service_completed_successfully
+      chromadb:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - nexus-net
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: nexus-frontend
+    ports:
+      - "3001:3001"
+    environment:
+      NEXT_PUBLIC_GATEWAY_URL: http://localhost:3000
+      NEXT_PUBLIC_AI_SERVICE_URL: http://localhost:8001
+      NEXT_PUBLIC_SOCKET_URL: http://localhost:3000
+    depends_on:
+      gateway:
+        condition: service_started
+      ai-service:
+        condition: service_started
+    restart: on-failure
+    networks:
+      - nexus-net
+
+volumes:
+  redis_data:
+  mongo_data:
+  neo4j_data:
+  chroma_data:
+
+networks:
+  nexus-net:
+    driver: bridge

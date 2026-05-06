@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+env/
+
+# Environment
+.env
+.env.example
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Build
+dist/
+build/
+.next/
+frontend/.next/
+frontend/out/
+
+# Docker volumes
+neo4j_data/
+mongo_data/
+redis_data/
+chroma_data/
+
+# Coverage
+coverage/
+.coverage
+htmlcov/

@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "NexusGraphEvent",
+  "description": "Unified event schema for all Nexus-Graph workplace events",
+  "type": "object",
+  "required": ["type", "source", "timestamp", "payload"],
+  "properties": {
+    "event_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique identifier assigned by the gateway"
+    },
+    "correlation_id": {
+      "type": "string",
+      "description": "Identifier used to link cross-tool events into a timeline"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "slack_message",
+        "github_commit",
+        "github_pr",
+        "jira_ticket",
+        "jira_comment",
+        "decision_extracted",
+        "conflict_detected"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "enum": ["slack", "github", "jira", "ai-service"]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "payload": {
+      "type": "object",
+      "properties": {
+        "user": { "type": "string" },
+        "message": { "type": "string" },
+        "channel": { "type": "string" },
+        "repo": { "type": "string" },
+        "branch": { "type": "string" },
+        "diff": { "type": "string" },
+        "commit_sha": { "type": "string" },
+        "ticket_id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "type": "string" },
+        "priority": { "type": "string" }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "processed": { "type": "boolean", "default": false },
+        "processing_time_ms": { "type": "number" },
+        "ai_version": { "type": "string" }
+      }
+    }
+  }
+}

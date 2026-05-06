@@ -1,0 +1,52 @@
+[
+  {
+    "type": "slack_message",
+    "source": "slack",
+    "timestamp": "2026-05-07T10:30:00Z",
+    "payload": {
+      "user": "Backend Lead",
+      "message": "Keep server cooling at 180°C max. This is a hard constraint for all production environments.",
+      "channel": "#infrastructure"
+    }
+  },
+  {
+    "type": "slack_message",
+    "source": "slack",
+    "timestamp": "2026-05-07T10:45:00Z",
+    "payload": {
+      "user": "CTO",
+      "message": "We are migrating the auth service to OAuth2 by end of Q2. No new basic-auth implementations allowed.",
+      "channel": "#engineering"
+    }
+  },
+  {
+    "type": "slack_message",
+    "source": "slack",
+    "timestamp": "2026-05-07T11:00:00Z",
+    "payload": {
+      "user": "DevOps Engineer",
+      "message": "All new services must use Kubernetes deployment manifests. Docker Swarm is deprecated.",
+      "channel": "#devops"
+    }
+  },
+  {
+    "type": "slack_message",
+    "source": "slack",
+    "timestamp": "2026-05-07T11:15:00Z",
+    "payload": {
+      "user": "Security Lead",
+      "message": "Decision: All API endpoints must implement rate limiting at 1000 req/min per user. No exceptions.",
+      "channel": "#security"
+    }
+  },
+  {
+    "type": "slack_message",
+    "source": "slack",
+    "timestamp": "2026-05-07T11:30:00Z",
+    "payload": {
+      "user": "Frontend Lead",
+      "message": "We agreed to standardize on React 19 for all frontend projects moving forward.",
+      "channel": "#frontend"
+    }
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "type": "jira_ticket",
+    "source": "jira",
+    "timestamp": "2026-05-07T09:00:00Z",
+    "payload": {
+      "user": "Project Manager",
+      "ticket_id": "NEXUS-101",
+      "title": "Migrate auth service to OAuth2",
+      "description": "Complete migration of authentication service from basic auth to OAuth2. Target: End of Q2 2026.",
+      "status": "In Progress",
+      "priority": "High"
+    }
+  },
+  {
+    "type": "jira_ticket",
+    "source": "jira",
+    "timestamp": "2026-05-07T09:30:00Z",
+    "payload": {
+      "user": "DevOps Engineer",
+      "ticket_id": "NEXUS-102",
+      "title": "Set up Kubernetes manifests for all services",
+      "description": "Create K8s deployment, service, and ingress manifests for all microservices. Deprecate Docker Swarm configs.",
+      "status": "To Do",
+      "priority": "Medium"
+    }
+  },
+  {
+    "type": "jira_comment",
+    "source": "jira",
+    "timestamp": "2026-05-07T10:00:00Z",
+    "payload": {
+      "user": "Backend Lead",
+      "ticket_id": "NEXUS-103",
+      "title": "Infrastructure cooling policy enforcement",
+      "message": "Reminder: cooling limits are 180°C. Any change requires CTO approval.",
+      "status": "Open",
+      "priority": "Critical"
+    }
+  },
+  {
+    "type": "jira_ticket",
+    "source": "jira",
+    "timestamp": "2026-05-07T10:30:00Z",
+    "payload": {
+      "user": "Security Lead",
+      "ticket_id": "NEXUS-104",
+      "title": "Implement API rate limiting across all endpoints",
+      "description": "Enforce 1000 req/min per user rate limiting on all API endpoints. Audit existing endpoints for compliance.",
+      "status": "In Progress",
+      "priority": "High"
+    }
+  }
+]

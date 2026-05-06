@@ -1,0 +1,77 @@
+@import "reactflow/dist/style.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 220 24% 6%;
+  --foreground: 210 38% 96%;
+  --panel: 221 24% 10%;
+  --muted: 219 22% 14%;
+  --muted-foreground: 216 14% 68%;
+  --border: 219 18% 20%;
+  --input: 219 18% 20%;
+  --ring: 195 95% 68%;
+  --accent: 193 84% 57%;
+  --accent-foreground: 220 24% 6%;
+  --destructive: 0 82% 67%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(20, 184, 166, 0.12), transparent 28rem),
+    radial-gradient(circle at 88% 12%, rgba(59, 130, 246, 0.14), transparent 30rem),
+    linear-gradient(180deg, #071017 0%, #0b1018 45%, #080b12 100%);
+  color: hsl(var(--foreground));
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::selection {
+  background: rgba(56, 189, 248, 0.35);
+}
+
+.glass {
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.82), rgba(12, 18, 28, 0.72));
+  box-shadow: 0 18px 80px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
+}
+
+.react-flow {
+  background: transparent;
+}
+
+.react-flow__node {
+  border: 0;
+  background: transparent;
+}
+
+.react-flow__handle {
+  width: 8px;
+  height: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  background: #22d3ee;
+}
+
+.react-flow__edge-path {
+  stroke-linecap: round;
+}
+
+.recharts-wrapper text {
+  fill: #94a3b8;
+}

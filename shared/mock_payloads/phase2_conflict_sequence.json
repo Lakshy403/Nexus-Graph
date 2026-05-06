@@ -1,0 +1,42 @@
+[
+  {
+    "type": "slack_message",
+    "source": "slack",
+    "correlation_id": "corr-auth-token-policy",
+    "timestamp": "2026-05-07T14:00:00Z",
+    "payload": {
+      "user": "Security Lead",
+      "message": "Decision: OAuth tokens must expire in 24 hours max for all production APIs.",
+      "channel": "#security"
+    }
+  },
+  {
+    "type": "jira_ticket",
+    "source": "jira",
+    "correlation_id": "corr-auth-token-policy",
+    "timestamp": "2026-05-07T14:15:00Z",
+    "payload": {
+      "user": "Project Manager",
+      "ticket_id": "NEXUS-240",
+      "title": "Implement OAuth token expiry policy",
+      "description": "Apply the 24 hour token expiry architecture constraint to auth-service.",
+      "status": "In Progress",
+      "priority": "High"
+    }
+  },
+  {
+    "type": "github_commit",
+    "source": "github",
+    "correlation_id": "corr-auth-token-policy",
+    "timestamp": "2026-05-07T15:00:00Z",
+    "payload": {
+      "user": "dev-isha",
+      "repo": "auth-service",
+      "branch": "feature/session-config",
+      "ticket_id": "NEXUS-240",
+      "commit_sha": "f0e1d2c3b4a5",
+      "message": "Increase token expiry for mobile sessions",
+      "diff": "- TOKEN_EXPIRY_HOURS = 24\n+ TOKEN_EXPIRY_HOURS = 72"
+    }
+  }
+]
